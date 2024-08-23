@@ -20,13 +20,13 @@ echo $QT_LIB_DIR
 
 ## 配置环境
 
-###安装qt环境
+### 安装qt环境
 
 ```shell
 sudo apt install qt6-base-dev
 ```
 
-###配置环境变量
+### 配置环境变量
 
 在 Bash 中临时设置：
 
