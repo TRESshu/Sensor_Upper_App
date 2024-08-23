@@ -13,40 +13,47 @@ target("qt_test")
         set_toolchains("msvc")
         set_arch("x64") -- 或者 "arm64" 根据你的目标架构
         
-        -- 添加 Qt 框架
-        add_frameworks("QtCore", "QtGui", "QtWidgets")
-        
-        -- 设置包含目录和库目录
-        add_includedirs("C:/Qt/6.5.3/msvc2019_64/include")
-        add_includedirs("C:/Qt/6.5.3/msvc2019_64/include/QtCore")
-        add_includedirs("C:/Qt/6.5.3/msvc2019_64/include/QtGui")
-        add_includedirs("C:/Qt/6.5.3/msvc2019_64/include/QtWidgets")
-        add_linkdirs("C:/Qt/6.5.3/msvc2019_64/lib")
-
-        -- 手动链接库
-        add_links("Qt6Core", "Qt6Gui", "Qt6Widgets")
-    
-    -- Linux 平台配置
-    elseif is_plat("linux") then
-        set_toolchains("gcc")
-
-    -- 使用环境变量设置包含目录和库目录
+        -- 使用环境变量设置包含目录和库目录
         local qt_include_dir = os.getenv("QT_INCLUDE_DIR")
         local qt_lib_dir = os.getenv("QT_LIB_DIR")
-    
+        
         if qt_include_dir and qt_lib_dir then
             add_includedirs(qt_include_dir)
             add_includedirs(qt_include_dir .. "/QtCore")
             add_includedirs(qt_include_dir .. "/QtGui")
             add_includedirs(qt_include_dir .. "/QtWidgets")
             add_linkdirs(qt_lib_dir)
-        add_cxxflags("-fPIC")
-        -- 手动链接库
-        add_links("Qt6Core", "Qt6Gui", "Qt6Widgets")
-    else
-        raise("Environment variables QT_INCLUDE_DIR and QT_LIB_DIR must be set.")
+
+            -- 手动链接库
+            add_links("Qt6Core", "Qt6Gui", "Qt6Widgets")
+        else
+            raise("Environment variables QT_INCLUDE_DIR and QT_LIB_DIR must be set.")
+        end
+    -- Linux 平台配置
+    elseif is_plat("linux") then
+        set_toolchains("gcc")
+
+        -- 使用环境变量设置包含目录和库目录
+        local qt_include_dir = os.getenv("QT_INCLUDE_DIR")
+        local qt_lib_dir = os.getenv("QT_LIB_DIR")
+
+        if qt_include_dir and qt_lib_dir then
+            add_includedirs(qt_include_dir)
+            add_includedirs(qt_include_dir .. "/QtCore")
+            add_includedirs(qt_include_dir .. "/QtGui")
+            add_includedirs(qt_include_dir .. "/QtWidgets")
+            add_linkdirs(qt_lib_dir)
+
+            -- 添加 -fPIC 编译标志
+            add_cxxflags("-fPIC")
+
+            -- 手动链接库
+            add_links("Qt6Core", "Qt6Gui", "Qt6Widgets")
+        else
+            raise("Environment variables QT_INCLUDE_DIR and QT_LIB_DIR must be set.")
+        end
     end
-end
+
 
 
 
